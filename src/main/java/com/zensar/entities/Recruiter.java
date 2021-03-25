@@ -41,7 +41,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @Entity
-@Table(name = "recruiter")
+@Table(name = "recruiter", uniqueConstraints={@UniqueConstraint(columnNames = "username")})
 public class Recruiter {
 	@Id
 	@GeneratedValue( strategy = GenerationType.AUTO)
