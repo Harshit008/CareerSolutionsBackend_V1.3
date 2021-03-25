@@ -4,15 +4,10 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 //import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,17 +16,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zensar.entities.Jobs;
@@ -56,7 +47,7 @@ public class RecruiterController {
 	public RecruiterController() {
 
 	}
-	//hello world
+	
 	//****Get List of recruiters*****
 	@GetMapping(value = "/recruiter", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Recruiter>> getRecruiter() {
@@ -67,8 +58,9 @@ public class RecruiterController {
 	
 	//****Get Recruiter by RecruiterId****
 	@GetMapping(value = "/recruiter/{recruiterId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Recruiter getRecruiterById(@PathVariable("recruiterId") int recruiterId) {
-		return service.getRecruiterById(recruiterId);
+	public ResponseEntity<Recruiter> getRecruiterById(@PathVariable("recruiterId") int recruiterId) {
+		Recruiter recruiter = service.getRecruiterById(recruiterId);
+		return new ResponseEntity<Recruiter>(recruiter, HttpStatus.OK);
 	}
 
 	//****Register recruiter****
@@ -126,8 +118,8 @@ public class RecruiterController {
 
 	//****Used for Inserting Job for a particular recruiter(username)****
 	@PostMapping(value = "/insertJob/{username}")
-	@JsonIgnore
-	public List<Jobs> insertJob(@RequestBody(required = true) Jobs job, @PathVariable("username") String username) {
+	//@JsonIgnore
+	public ResponseEntity<List<Jobs>> insertJob(@RequestBody(required = true) Jobs job, @PathVariable("username") String username) {
 		// String username=(String) session.getAttribute("username");
 //		List<Skills> skills = new ArrayList<Skills>();
 		List<Jobs> jobs=new ArrayList<Jobs>();
@@ -152,7 +144,7 @@ public class RecruiterController {
 
 		// jobs.add(job);
 		System.out.println(job1);
-		return jobs;
+		return new ResponseEntity<List<Jobs>>(jobs, HttpStatus.OK);
 	}
 
 	//**** Used to get jobs for a particular recruiter(id)****
@@ -179,38 +171,40 @@ public class RecruiterController {
 	//Will be useful for jobseeker job search
 	//**** Get all jobs for all recruiters****
 	@GetMapping(value = "/getJobs", produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<Jobs> getJobs() {
-		return service.getJobs();
+	public ResponseEntity<List<Jobs>> getJobs() {
+		 List<Jobs> jobs = service.getJobs();
+		 return new ResponseEntity<List<Jobs>>(jobs,HttpStatus.OK);
 	}
 	
 	//**** Used for assigning a skill to a job****//not in our record
 	@PutMapping(value = "/skills/{skillId}/{jobId}")
 	@ResponseBody
 	@JsonIgnore
-	public Skills assignSkills(@PathVariable("skillId")String skillId,@PathVariable("jobId")String jobId){
+	public ResponseEntity<Skills> assignSkills(@PathVariable("skillId")String skillId,@PathVariable("jobId")String jobId){
 		int jid=Integer.parseInt(jobId);
 		int sid=Integer.parseInt(skillId);
 		Jobs job=service.getJobsByJobId(jid);
 		Skills skill=service.getSkillsBySkillId(sid);
 		skill.assignJobs(job);
 		Skills insertSkills = service.insertSkills(skill);
-		return insertSkills;
+		return new ResponseEntity<Skills>(insertSkills,HttpStatus.OK);
 		
 	}
 	
 	//**** Used for inserting skills****//CommandLineRunner
 	@PostMapping(value = "/insertSkills")
 	@ResponseBody
-	public Skills insertSkills(@RequestBody(required = true)Skills skills) {
+	public ResponseEntity<Skills> insertSkills(@RequestBody(required = true)Skills skills) {
 		Skills skill=service.insertSkills(skills);
-		return skill;
+		return new ResponseEntity<Skills>(skill,HttpStatus.OK);
 	}
 	
 	//**** Display all skills in DB****
 	@JsonIgnore
 	@GetMapping(value="/getSkills",produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<Skills> getSkills(){
-		return service.getSkills();
+	public ResponseEntity<List<Skills>> getSkills(){
+		List<Skills> skills = service.getSkills();
+		return new ResponseEntity<List<Skills>>(skills,HttpStatus.OK);
 	}
 	
 	
@@ -347,3 +341,5 @@ public class RecruiterController {
 //	
 //	
 //	
+
+
