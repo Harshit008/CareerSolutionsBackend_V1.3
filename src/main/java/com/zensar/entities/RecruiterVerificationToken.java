@@ -13,7 +13,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "token")
+@Table(name = "recruiter_token")
 public class RecruiterVerificationToken {
 
     @Id

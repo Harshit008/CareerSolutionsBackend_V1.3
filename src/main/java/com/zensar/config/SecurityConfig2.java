@@ -22,12 +22,12 @@ import com.zensar.service.JobSeekerDetailsServiceImpl;
 import com.zensar.service.RecruiterDetailsServiceImpl;
 @Configuration
 @EnableWebSecurity
-@Order(1)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@Order(2)
+public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
 
 	
 	@Autowired
-	private RecruiterDetailsServiceImpl userDetailsService;
+	private JobSeekerDetailsServiceImpl userDetailsService;
 	
 	
 	@Autowired

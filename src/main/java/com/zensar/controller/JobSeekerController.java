@@ -1,17 +1,20 @@
 package com.zensar.controller;
 
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,34 +23,48 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zensar.entities.Applications;
 import com.zensar.entities.JobSeeker;
+import com.zensar.entities.JobSeekerAuthenticationResponse;
 import com.zensar.entities.Jobs;
+import com.zensar.exception.GlobalExceptionHandler;
 import com.zensar.service.CareerSoltionsJobSeekerService;
 
 @RestController
-//@RequestMapping(value="jobseeker")
+@RequestMapping(value="/myapp")
 public class JobSeekerController {
 
 	public JobSeekerController() {
 
 	}
-
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@Autowired
 	private CareerSoltionsJobSeekerService service;
 
 	@PostMapping(value = "/jobseekerlogin")
 	// @ResponseBody
-	public ResponseEntity<JobSeeker> getJobSeekerLoginPage(@RequestBody JobSeeker jobSeeker) {
+	public ResponseEntity<JobSeekerAuthenticationResponse> getJobSeekerLoginPage(@RequestBody JobSeeker jobSeeker) {
 
-		JobSeeker jobSeekerlogin = service.jobSeekerlogin(jobSeeker.getUsername(), jobSeeker.getPassword());
-		return new ResponseEntity<JobSeeker>(jobSeekerlogin, HttpStatus.OK);
+		JobSeekerAuthenticationResponse jobSeekerlogin = service.jobSeekerlogin(jobSeeker);
+		return new ResponseEntity<JobSeekerAuthenticationResponse>(jobSeekerlogin, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/registerjobseeker")
-	public ResponseEntity<JobSeeker> registerJobSeeker(@RequestBody JobSeeker jobSeeker,
-			@RequestParam("files") MultipartFile[] files) {
-
+	@JsonIgnore
+	public ResponseEntity<JobSeeker> registerJobSeeker(@RequestBody JobSeeker jobSeeker) throws GlobalExceptionHandler {
+		jobSeeker.setEnabled(false);
+		jobSeeker.setCreated(Instant.now());
+		jobSeeker.setPassword(passwordEncoder.encode(jobSeeker.getPassword()));
 		JobSeeker registerJobSeeker = service.registerJobSeeker(jobSeeker);
 		return new ResponseEntity<JobSeeker>(registerJobSeeker, HttpStatus.OK);
+	}
+	
+	@GetMapping("verifyJobSeeker/{token}")
+	public ResponseEntity<String> verifyJobSeeker(@PathVariable("token")String token) throws GlobalExceptionHandler{
+		service.verifyJobSeeker(token);
+		return new ResponseEntity<String>("Account activated Successfully", HttpStatus.OK);
+		
 	}
 
 	@GetMapping(value = "/getjobseekers", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -64,7 +81,7 @@ public class JobSeekerController {
 
 	@PutMapping(value = "/updateJobSeeker/{jobSeekerId}")
 	public ResponseEntity<String> updateJobSeeker(@PathVariable("jobSeekerId") String jobSeekerId,
-			@RequestBody JobSeeker jobSeeker) {
+			@RequestBody JobSeeker jobSeeker) throws GlobalExceptionHandler {
 		int jobseekerid = Integer.parseInt(jobSeekerId);
 		service.deleteJobSeeker(jobseekerid);
 		jobSeeker.setJobSeekerId(jobseekerid);

@@ -1,5 +1,6 @@
 package com.zensar.entities;
 
+import java.time.Instant;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -32,6 +33,8 @@ public class JobSeeker {
 	private String password;
 	private String username;
 	private String email;
+	private boolean enabled;
+	private Instant created;
 	@JsonIgnore
 	@ManyToMany(mappedBy = "jobSeeker")
 	private List<Applications> applications;

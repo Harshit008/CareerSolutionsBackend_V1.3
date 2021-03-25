@@ -26,7 +26,7 @@ import com.zensar.repository.JobsRepository;
 import com.zensar.repository.RecruiterRepository;
 import com.zensar.repository.ResumeRepository;
 import com.zensar.repository.SkillsRepository;
-import com.zensar.repository.VerificationTokenRepository;
+import com.zensar.repository.RecruiterVerificationRepository;
 import com.zensar.security.JwtUtil;
 
 import io.jsonwebtoken.security.InvalidKeyException;
@@ -49,7 +49,7 @@ public class CareerSolutionsRecruiterServiceImpl implements CareerSolutionsRecru
 	private ResumeRepository resumeRepository;
 	
 	@Autowired
-	private VerificationTokenRepository verificationTokenRepository;
+	private RecruiterVerificationRepository verificationTokenRepository;
 	
 	@Autowired
 	private MailService mailService;

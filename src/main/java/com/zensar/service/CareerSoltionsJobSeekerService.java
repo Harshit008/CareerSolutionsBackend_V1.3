@@ -7,14 +7,19 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.zensar.entities.Applications;
 import com.zensar.entities.JobSeeker;
+import com.zensar.entities.JobSeekerAuthenticationResponse;
 import com.zensar.entities.Jobs;
+import com.zensar.entities.Recruiter;
+import com.zensar.entities.RecruiterAuthenticationResponse;
 import com.zensar.entities.Resume;
+import com.zensar.exception.GlobalExceptionHandler;
+
+import io.jsonwebtoken.security.InvalidKeyException;
 
 public interface CareerSoltionsJobSeekerService {
 
-	JobSeeker jobSeekerlogin(String username, String password);
 
-	JobSeeker registerJobSeeker(JobSeeker jobSeeker);
+	JobSeeker registerJobSeeker(JobSeeker jobSeeker) throws GlobalExceptionHandler;
 
 	List<JobSeeker> getJobSeeker();
 
@@ -37,6 +42,12 @@ public interface CareerSoltionsJobSeekerService {
 	Optional<Resume> getFile(Integer fileId);
 
 	List<Resume> getFiles();
+
+	void verifyJobSeeker(String token) throws GlobalExceptionHandler;
+
+	JobSeekerAuthenticationResponse jobSeekerlogin(JobSeeker jobSeeker);
+
+	
 
 	
 
