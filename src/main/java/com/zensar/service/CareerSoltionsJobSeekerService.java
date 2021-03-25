@@ -9,15 +9,10 @@ import com.zensar.entities.Applications;
 import com.zensar.entities.JobSeeker;
 import com.zensar.entities.JobSeekerAuthenticationResponse;
 import com.zensar.entities.Jobs;
-import com.zensar.entities.Recruiter;
-import com.zensar.entities.RecruiterAuthenticationResponse;
 import com.zensar.entities.Resume;
 import com.zensar.exception.GlobalExceptionHandler;
 
-import io.jsonwebtoken.security.InvalidKeyException;
-
 public interface CareerSoltionsJobSeekerService {
-
 
 	JobSeeker registerJobSeeker(JobSeeker jobSeeker) throws GlobalExceptionHandler;
 

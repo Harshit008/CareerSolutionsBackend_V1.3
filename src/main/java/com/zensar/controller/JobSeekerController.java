@@ -29,16 +29,16 @@ import com.zensar.exception.GlobalExceptionHandler;
 import com.zensar.service.CareerSoltionsJobSeekerService;
 
 @RestController
-@RequestMapping(value="/myapp")
+@RequestMapping(value = "/myapp")
 public class JobSeekerController {
 
 	public JobSeekerController() {
 
 	}
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	@Autowired
 	private CareerSoltionsJobSeekerService service;
 
@@ -59,12 +59,12 @@ public class JobSeekerController {
 		JobSeeker registerJobSeeker = service.registerJobSeeker(jobSeeker);
 		return new ResponseEntity<JobSeeker>(registerJobSeeker, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("verifyJobSeeker/{token}")
-	public ResponseEntity<String> verifyJobSeeker(@PathVariable("token")String token) throws GlobalExceptionHandler{
+	public ResponseEntity<String> verifyJobSeeker(@PathVariable("token") String token) throws GlobalExceptionHandler {
 		service.verifyJobSeeker(token);
 		return new ResponseEntity<String>("Account activated Successfully", HttpStatus.OK);
-		
+
 	}
 
 	@GetMapping(value = "/getjobseekers", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -90,13 +90,14 @@ public class JobSeekerController {
 	}
 
 	@PostMapping(value = "/insertApplications/{jobId}")
-	public ResponseEntity<String> insertApplications(@PathVariable("jobId") String jobId, @RequestBody Applications application) {
+	public ResponseEntity<String> insertApplications(@PathVariable("jobId") String jobId,
+			@RequestBody Applications application) {
 		Jobs job = service.getJobById(Integer.parseInt(jobId));
 		// JobSeeker jobseeker=service.getJobSeekerById(Integer.parseInt(jobSeekerId));
 		application.setJobs(job);
 		// application.assignJobSeeker(jobseeker);
 		service.insertApplications(application);
-		return new ResponseEntity<String>("Application Inserted",HttpStatus.OK);
+		return new ResponseEntity<String>("Application Inserted", HttpStatus.OK);
 	}
 
 	@PutMapping(value = "/applications/{applicationId}/{jobSeekerId}")
@@ -110,20 +111,20 @@ public class JobSeekerController {
 		Applications application = service.getApplicationsByApplicationId(applicationId);
 		application.assignJobSeeker(jobSeeker);
 		Applications insertApplication = service.insertApplications(application);
-		return new ResponseEntity<Applications>(insertApplication,HttpStatus.OK);
+		return new ResponseEntity<Applications>(insertApplication, HttpStatus.OK);
 
 	}
 
 	@GetMapping(value = "/getApplications", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Applications>> getApplications() {
 		List<Applications> applications = service.getApplications();
-		return new ResponseEntity<List<Applications>>(applications,HttpStatus.OK);
+		return new ResponseEntity<List<Applications>>(applications, HttpStatus.OK);
 	}
 
 	@DeleteMapping(value = "/deleteApplication/{applicationId}")
 	public ResponseEntity<String> deleteApplication(@PathVariable("applicationId") String applicationId) {
 		service.deleteApplication(Integer.parseInt(applicationId));
-		return new ResponseEntity<String>("Application Deleted",HttpStatus.OK);
+		return new ResponseEntity<String>("Application Deleted", HttpStatus.OK);
 	}
 
 	@PostMapping("/uploadFiles")
@@ -135,24 +136,4 @@ public class JobSeekerController {
 
 	}
 
-//	@PostMapping("/uploadresume")
-//	public ResponseEntity uploadToDB(@RequestParam("file") MultipartFile file) {
-//		Document doc = new Document();
-//		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-//		doc.setDocName(fileName);
-//		try {
-//			doc.setFile(file.getBytes());
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		documentDao.save(doc);
-//		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-//				.path("/files/download/")
-//				.path(fileName).path("/db")
-//				.toUriString();
-//		return ResponseEntity.ok(fileDownloadUri);
-//	}
-
 }
-
-

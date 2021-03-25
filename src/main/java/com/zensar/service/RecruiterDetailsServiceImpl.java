@@ -4,12 +4,10 @@ import static java.util.Collections.singletonList;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,35 +19,25 @@ import com.zensar.entities.RecruiterDetails;
 import com.zensar.repository.RecruiterRepository;
 
 import lombok.AllArgsConstructor;
+
 @Service
 @AllArgsConstructor
 public class RecruiterDetailsServiceImpl implements UserDetailsService {
-	
+
 	@Autowired
 	private RecruiterRepository repository;
-	
+
 	@Override
-    @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String username) {
-        Optional<Recruiter> recruiterOptional = repository.findByUsername(username);
-        Recruiter recruiter = recruiterOptional
-                .orElseThrow(() -> new UsernameNotFoundException("No user " +
-                        "Found with username : " + username));
-        System.out.println(recruiter);
-        
-//        recruiter.setAccountNonExpired(true);
-//        recruiter.setAccountNonLocked(true);
-//        recruiter.setCredentialsNonExpired(true);
-//        recruiterDetails.setRecruiter(recruiter);
-       
-//        return new User(recruiter.getUsername(), recruiter.getPassword(),
-//                recruiter.isEnabled(), true, true,
-//                true, getAuthorities("USER"));
-        	return new RecruiterDetails(getAuthorities("USER"), recruiter, true, true, true);
-    }
+	@Transactional(readOnly = true)
+	public UserDetails loadUserByUsername(String username) {
+		Optional<Recruiter> recruiterOptional = repository.findByUsername(username);
+		Recruiter recruiter = recruiterOptional
+				.orElseThrow(() -> new UsernameNotFoundException("No user " + "Found with username : " + username));
+		System.out.println(recruiter);
+		return new RecruiterDetails(getAuthorities("USER"), recruiter, true, true, true);
+	}
 
-
-    private Collection<? extends GrantedAuthority> getAuthorities(String role) {
-        return singletonList(new SimpleGrantedAuthority(role));
-    }
+	private Collection<? extends GrantedAuthority> getAuthorities(String role) {
+		return singletonList(new SimpleGrantedAuthority(role));
+	}
 }

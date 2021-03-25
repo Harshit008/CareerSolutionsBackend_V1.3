@@ -1,4 +1,5 @@
 package com.zensar.entities;
+
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -19,10 +20,10 @@ import lombok.NoArgsConstructor;
 @Table(name = "Job_Seeker_token")
 public class JobSeekerVerificationToken {
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
-    private String token;
-    @OneToOne(fetch = LAZY)
-    private JobSeeker jobSeeker;
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	private Long id;
+	private String token;
+	@OneToOne(fetch = LAZY)
+	private JobSeeker jobSeeker;
 }
