@@ -30,6 +30,7 @@ import com.zensar.security.JwtUtil;
 
 @Service
 public class CareerSolutionsJobSeekerServiceImpl implements CareerSoltionsJobSeekerService {
+	
 	@Autowired
 	private JobSeekerRepository jobSeekerRepository;
 
