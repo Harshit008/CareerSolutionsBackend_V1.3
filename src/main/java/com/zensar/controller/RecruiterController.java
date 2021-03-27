@@ -120,13 +120,7 @@ public class RecruiterController {
 		return new ResponseEntity<Jobs>(jobs, HttpStatus.OK);
 	}
 
-	// Will be useful for jobseeker job search
-	// **** Get all jobs for all recruiters****
-	@GetMapping(value = "/getJobs", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Jobs>> getJobs() {
-		List<Jobs> jobs = service.getJobs();
-		return new ResponseEntity<List<Jobs>>(jobs, HttpStatus.OK);
-	}
+	
 
 	// **** Used for assigning a skill to a job****//not in our record
 	@PutMapping(value = "/skills/{skillId}/{jobId}")

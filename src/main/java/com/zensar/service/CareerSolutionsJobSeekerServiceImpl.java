@@ -176,4 +176,15 @@ public class CareerSolutionsJobSeekerServiceImpl implements CareerSoltionsJobSee
 		return new JobSeekerAuthenticationResponse(token, jobSeeker.getUsername());
 	}
 
+	@Override
+	public List<Jobs> getJobs() {
+		return jobsRepository.findAll();
+	}
+
+	@Override
+	public JobSeeker getJobSeekerByUsername(String username) {
+			JobSeeker jobSeeker= jobSeekerRepository.findByUsername(username).get();
+			return jobSeeker;
+	}
+
 }

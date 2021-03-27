@@ -25,6 +25,7 @@ import com.zensar.entities.Applications;
 import com.zensar.entities.JobSeeker;
 import com.zensar.entities.JobSeekerAuthenticationResponse;
 import com.zensar.entities.Jobs;
+import com.zensar.entities.Resume;
 import com.zensar.exception.GlobalExceptionHandler;
 import com.zensar.service.CareerSoltionsJobSeekerService;
 
@@ -72,6 +73,15 @@ public class JobSeekerController {
 		List<JobSeeker> jobSeeker = service.getJobSeeker();
 		return new ResponseEntity<List<JobSeeker>>(jobSeeker, HttpStatus.OK);
 	}
+	
+	
+	// Will be useful for jobseeker job search
+		// **** Get all jobs for all recruiters****
+		@GetMapping(value = "/jobSeeker/getJobs", produces = MediaType.APPLICATION_JSON_VALUE)
+		public ResponseEntity<List<Jobs>> getJobs() {
+			List<Jobs> jobs = service.getJobs();
+			return new ResponseEntity<List<Jobs>>(jobs, HttpStatus.OK);
+		}
 
 	@DeleteMapping(value = "/deletejobseeker/{jobId}")
 	public ResponseEntity<String> deleteJobSeeker(@PathVariable("jobId") String jobId) {
@@ -89,12 +99,14 @@ public class JobSeekerController {
 		return new ResponseEntity<String>("Jobseeker updated", HttpStatus.OK);
 	}
 
-	@PostMapping(value = "/insertApplications/{jobId}")
-	public ResponseEntity<String> insertApplications(@PathVariable("jobId") String jobId,
+	@PostMapping(value = "/insertApplications/{jobId}/{jobSeekerUsername}")
+	public ResponseEntity<String> insertApplications(@PathVariable("jobId") String jobId,@PathVariable("jobSeekerUsername")String username,
 			@RequestBody Applications application) {
 		Jobs job = service.getJobById(Integer.parseInt(jobId));
+		JobSeeker jobSeeker = service.getJobSeekerByUsername(username);
 		// JobSeeker jobseeker=service.getJobSeekerById(Integer.parseInt(jobSeekerId));
 		application.setJobs(job);
+		application.assignJobSeeker(jobSeeker);
 		// application.assignJobSeeker(jobseeker);
 		service.insertApplications(application);
 		return new ResponseEntity<String>("Application Inserted", HttpStatus.OK);

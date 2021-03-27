@@ -42,6 +42,10 @@ public interface CareerSoltionsJobSeekerService {
 
 	JobSeekerAuthenticationResponse jobSeekerlogin(JobSeeker jobSeeker);
 
+	List<Jobs> getJobs();
+
+	JobSeeker getJobSeekerByUsername(String username);
+
 	
 
 	
