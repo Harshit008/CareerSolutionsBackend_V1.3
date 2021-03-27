@@ -27,18 +27,16 @@ public class Applications{
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)
 		private int applicationId;
-		private String status;
+		private boolean status;
 		
-		@ManyToMany
-		@JoinTable(joinColumns = @JoinColumn(name = "application_id"),
-		inverseJoinColumns = @JoinColumn(name = "jobSeeker_id"))
-		private List<JobSeeker> jobSeeker;
+		@ManyToOne
+		private JobSeeker jobSeeker;
 		@ManyToOne
 		private Jobs jobs;
 		
-		public void assignJobSeeker(JobSeeker jobseeker) {
-			jobSeeker.add(jobseeker);
-		}
+//		public void assignJobSeeker(JobSeeker jobseeker) {
+//			jobSeeker.add(jobseeker);
+//		}
 		
 		
 }

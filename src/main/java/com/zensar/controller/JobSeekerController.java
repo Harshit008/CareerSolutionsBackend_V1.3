@@ -106,10 +106,21 @@ public class JobSeekerController {
 		JobSeeker jobSeeker = service.getJobSeekerByUsername(username);
 		// JobSeeker jobseeker=service.getJobSeekerById(Integer.parseInt(jobSeekerId));
 		application.setJobs(job);
-		application.assignJobSeeker(jobSeeker);
+		application.setStatus(false);
+		application.setJobSeeker(jobSeeker);
+		//application.assignJobSeeker(jobSeeker);
 		// application.assignJobSeeker(jobseeker);
 		service.insertApplications(application);
 		return new ResponseEntity<String>("Application Inserted", HttpStatus.OK);
+	}
+	
+	@GetMapping(value="/getApplication/{jobSeekerUsername}")
+	public ResponseEntity<List<Applications>> displayApplication(@PathVariable("jobSeekerUsername")String username){
+		JobSeeker jobSeeker = service.getJobSeekerByUsername(username);
+		List<Applications> applications = jobSeeker.getApplications();
+		
+		return new ResponseEntity<List<Applications>>(applications, HttpStatus.OK);
+		
 	}
 
 	@PutMapping(value = "/applications/{applicationId}/{jobSeekerId}")
@@ -121,7 +132,7 @@ public class JobSeekerController {
 		int applicationId = Integer.parseInt(applicationId1);
 		JobSeeker jobSeeker = service.getJobSeekerById(jobSeekerId);
 		Applications application = service.getApplicationsByApplicationId(applicationId);
-		application.assignJobSeeker(jobSeeker);
+		//application.assignJobSeeker(jobSeeker);
 		Applications insertApplication = service.insertApplications(application);
 		return new ResponseEntity<Applications>(insertApplication, HttpStatus.OK);
 
