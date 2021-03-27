@@ -1,6 +1,7 @@
 package com.zensar.controller;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -28,9 +30,12 @@ import com.zensar.entities.Applications;
 import com.zensar.entities.JobSeeker;
 import com.zensar.entities.JobSeekerAuthenticationResponse;
 import com.zensar.entities.Jobs;
+import com.zensar.entities.NotificationEmail;
+import com.zensar.entities.Recruiter;
 import com.zensar.entities.Resume;
 import com.zensar.exception.GlobalExceptionHandler;
 import com.zensar.service.CareerSoltionsJobSeekerService;
+import com.zensar.service.MailService;
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/myapp")
@@ -45,6 +50,9 @@ public class JobSeekerController {
 
 	@Autowired
 	private CareerSoltionsJobSeekerService service;
+	
+	@Autowired
+	private MailService mailService;
 
 	@PostMapping(value = "/jobseekerlogin")
 	// @ResponseBody
@@ -109,7 +117,7 @@ public class JobSeekerController {
 		JobSeeker jobSeeker = service.getJobSeekerByUsername(username);
 		// JobSeeker jobseeker=service.getJobSeekerById(Integer.parseInt(jobSeekerId));
 		application.setJobs(job);
-		application.setStatus(false);
+		application.setStatus("Open");
 		application.setJobSeeker(jobSeeker);
 		//application.assignJobSeeker(jobSeeker);
 		// application.assignJobSeeker(jobseeker);
@@ -162,8 +170,34 @@ public class JobSeekerController {
 		}
 		//System.out.println(jobSeeker);
 		return new ResponseEntity<String>("Resume uploaded!", HttpStatus.OK);
+	}
 	
-
+	@GetMapping(value="/manageApplication/{jobId}")
+	public ResponseEntity<List<Applications>> manageApplication(@PathVariable("jobId")String jobId){
+		Jobs jid = service.getJobById(Integer.parseInt(jobId));
+		List<Applications> applications = jid.getApplications();
+		List<Applications> visible=new ArrayList<Applications>();
+		for(int i=0;i<applications.size();i++) {
+			if(applications.get(i).getStatus().equals("Open")|| applications.get(i).getStatus().equals("Accepted")) {
+					visible.add(applications.get(i));
+			}
+		}
+		return new ResponseEntity<List<Applications>>(visible,HttpStatus.OK);	
+	}
+	
+	@PatchMapping(value="/acceptApplication/{applicationId}")
+	public ResponseEntity<String> acceptApplication(@PathVariable("applicationId")String applicationId) throws GlobalExceptionHandler{
+		Applications applications = service.getApplicationsByApplicationId(Integer.parseInt(applicationId));
+		JobSeeker jobSeeker = applications.getJobSeeker();
+		String recruiter = applications.getJobs().getRecruiter().getRecruiterName();
+		applications.setStatus("Accepted");
+		service.insertApplications(applications);
+		mailService.sendMail(new NotificationEmail("Congratulations!! Application Accepted!", jobSeeker.getEmail(),
+				"Thank you for the keen interest you have shown in joining "+recruiter+" \r\n"
+				+ "\r\n"
+				+ "Please accept our heartiest congratulations and warm welcome to "+recruiter+" family." ));
+		return new ResponseEntity<String>("Application Accepted", HttpStatus.OK);
+		
 	}
 
 }

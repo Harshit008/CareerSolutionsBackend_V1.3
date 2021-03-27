@@ -15,12 +15,13 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @AllArgsConstructor
 @Slf4j
-class MailService {
+public class MailService {
 
 	private final JavaMailSender mailSender;
 	private final MailContentBuilder mailContentBuilder;
 
 	@Async
+	public
 	void sendMail(NotificationEmail notificationEmail) throws GlobalExceptionHandler {
 		MimeMessagePreparator messagePreparator = mimeMessage -> {
 			MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);

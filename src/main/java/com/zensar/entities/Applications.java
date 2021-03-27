@@ -27,7 +27,7 @@ public class Applications{
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)
 		private int applicationId;
-		private boolean status;
+		private String status;
 		
 		@ManyToOne
 		private JobSeeker jobSeeker;
