@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,7 @@ import com.zensar.entities.Jobs;
 import com.zensar.entities.Resume;
 import com.zensar.exception.GlobalExceptionHandler;
 import com.zensar.service.CareerSoltionsJobSeekerService;
-
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/myapp")
 public class JobSeekerController {
@@ -150,12 +151,18 @@ public class JobSeekerController {
 		return new ResponseEntity<String>("Application Deleted", HttpStatus.OK);
 	}
 
-	@PostMapping("/uploadFiles")
-	public void uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+	@PostMapping(value="/uploadResume/{username}",headers = "content-type=multipart/*" )
+	public ResponseEntity<String> uploadMultipleFiles(@PathVariable("username")String username, @RequestParam("files") MultipartFile[] files) {
+		JobSeeker jobSeeker = service.getJobSeekerByUsername(username);
+		Resume resume=new Resume();
 		for (MultipartFile file : files) {
-			service.saveFile(file);
-
+			 resume = service.saveFile(file);
+			
 		}
+		System.out.println(jobSeeker);
+		resume.setJobSeeker(jobSeeker);
+		return new ResponseEntity<String>("Resume uploaded!", HttpStatus.OK);
+	
 
 	}
 

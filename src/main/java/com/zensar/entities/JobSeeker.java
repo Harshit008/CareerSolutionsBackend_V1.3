@@ -18,12 +18,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@ToString
 public class JobSeeker {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,6 +40,6 @@ public class JobSeeker {
 	@OneToMany(mappedBy = "jobSeeker", orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Applications> applications;
 	
-	@OneToOne(mappedBy = "jobSeeker")
-	private Resume resume;
+//	@OneToOne(mappedBy = "jobSeeker")
+//	private Resume resume;
 }
