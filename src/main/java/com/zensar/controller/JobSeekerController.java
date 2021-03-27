@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -151,16 +153,14 @@ public class JobSeekerController {
 		return new ResponseEntity<String>("Application Deleted", HttpStatus.OK);
 	}
 
-	@PostMapping(value="/uploadResume/{username}",headers = "content-type=multipart/*" )
-	public ResponseEntity<String> uploadMultipleFiles(@PathVariable("username")String username, @RequestParam("files") MultipartFile[] files) {
-		JobSeeker jobSeeker = service.getJobSeekerByUsername(username);
-		Resume resume=new Resume();
+	@PostMapping(value="/uploadResume/{username}" ,headers = "content-type=multipart/form-data",produces = MediaType.ALL_VALUE)
+	public ResponseEntity<String> uploadMultipleFiles(@PathVariable("username")String username, @RequestPart("file") MultipartFile[] files) {
+		
 		for (MultipartFile file : files) {
-			 resume = service.saveFile(file);
+			 Resume resume = service.saveFile(file,username);
 			
 		}
-		System.out.println(jobSeeker);
-		resume.setJobSeeker(jobSeeker);
+		//System.out.println(jobSeeker);
 		return new ResponseEntity<String>("Resume uploaded!", HttpStatus.OK);
 	
 

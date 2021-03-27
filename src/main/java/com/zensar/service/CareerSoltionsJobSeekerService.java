@@ -32,7 +32,6 @@ public interface CareerSoltionsJobSeekerService {
 
 	void deleteApplication(int applicationId);
 
-	Resume saveFile(MultipartFile file);
 
 	Optional<Resume> getFile(Integer fileId);
 
@@ -45,6 +44,8 @@ public interface CareerSoltionsJobSeekerService {
 	List<Jobs> getJobs();
 
 	JobSeeker getJobSeekerByUsername(String username);
+
+	Resume saveFile(MultipartFile file, String username);
 
 	
 

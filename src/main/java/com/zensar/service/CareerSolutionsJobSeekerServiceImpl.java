@@ -124,11 +124,14 @@ public class CareerSolutionsJobSeekerServiceImpl implements CareerSoltionsJobSee
 		applicationsRepository.deleteById(applicationId);
 	}
 
+	
 	@Override
-	public Resume saveFile(MultipartFile file) {
+	public Resume saveFile(MultipartFile file,String username) {
 		String docname = file.getOriginalFilename();
+		JobSeeker jobSeeker = jobSeekerRepository.findByUsername(username).get();
 		try {
 			Resume resume = new Resume(docname, file.getContentType(), file.getBytes());
+			resume.setJobSeeker(jobSeeker);
 			return resumeRepository.save(resume);
 		} catch (Exception e) {
 			e.printStackTrace();
