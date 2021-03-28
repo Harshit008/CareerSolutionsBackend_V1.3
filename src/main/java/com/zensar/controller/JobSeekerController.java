@@ -25,12 +25,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zensar.entities.Applications;
-import com.zensar.entities.EducationalDetails;
 import com.zensar.entities.JobSeeker;
 import com.zensar.entities.JobSeekerAuthenticationResponse;
 import com.zensar.entities.Jobs;
 import com.zensar.entities.NotificationEmail;
-import com.zensar.entities.ProfessionalDetails;
 import com.zensar.entities.Resume;
 import com.zensar.exception.GlobalExceptionHandler;
 import com.zensar.service.CareerSoltionsJobSeekerService;
@@ -214,18 +212,65 @@ public class JobSeekerController {
 		
 	}
 	
-	@PatchMapping(value="/insertProfessionalDetails/{username}")
-	public ResponseEntity<String> insertProfessionalDetails(@RequestBody(required = true)ProfessionalDetails professionalDetails,@PathVariable("username")String username){
-		service.insertProfessionalDetails(professionalDetails,username);
-		return new ResponseEntity<String>("Professional Details Added!", HttpStatus.OK);
-		
+	@PatchMapping(value="/editProfile/{username}")
+	public ResponseEntity<String> editProfile(@PathVariable("username")String username,@RequestBody JobSeeker jobSeeker){
+		JobSeeker jobSeekerByUsername = service.getJobSeekerByUsername(username);
+		jobSeekerByUsername.setCareerLevel(jobSeeker.getCareerLevel());
+		jobSeekerByUsername.setCertifications(jobSeeker.getCertifications());
+		jobSeekerByUsername.setCollege(jobSeeker.getCollege());
+		jobSeekerByUsername.setExperience(jobSeeker.getExperience());
+		jobSeekerByUsername.setFieldOfStudy(jobSeeker.getFieldOfStudy());
+		jobSeekerByUsername.setGraduationMarks(jobSeeker.getGraduationMarks());
+		jobSeekerByUsername.setHscMarks(jobSeeker.getHscMarks());
+		jobSeekerByUsername.setLevelOfEducation(jobSeeker.getLevelOfEducation());
+		jobSeekerByUsername.setPreviousCompany(jobSeeker.getPreviousCompany());
+		jobSeekerByUsername.setPreviousctc(jobSeeker.getPreviousctc());
+		jobSeekerByUsername.setProjects(jobSeeker.getProjects());
+		jobSeekerByUsername.setSscMarks(jobSeeker.getSscMarks());
+		service.insertJobSeeker(jobSeekerByUsername);
+		return null;
 	}
 	
-	@PatchMapping(value="/insertEducationalDetails/{username}")
-	public ResponseEntity<String> insertEducationalDetails(@RequestBody(required = true)EducationalDetails educationalDetails,@PathVariable("username")String username){
-		service.insertEducationalDetails(educationalDetails,username);
-		return new ResponseEntity<String>("Educational Details Added!", HttpStatus.OK);
+//	@PatchMapping(value="/updateProfessionalDetails/{username}")
+//	public ResponseEntity<String> insertProfessionalDetails(@RequestBody(required = true)ProfessionalDetails professionalDetails,@PathVariable("username")String username){
+//		JobSeeker jobSeeker = service.getJobSeekerByUsername(username);
+//		int id =0;
+//		if(jobSeeker!=null) {
+//			 ProfessionalDetails professionalDetails2= jobSeeker.getProfessionalDetails();
+//			if(professionalDetails!=null) {
+//				id=professionalDetails2.getId();
+//				service.deleteProfessionalDetails(id);
+//				service.insertProfessionalDetails(professionalDetails,username);
+//			}else {
+//				service.insertProfessionalDetails(professionalDetails,username);
+//			}
+//			
+//		}
+//		
+//		
+//		return new ResponseEntity<String>("Professional Details Added!", HttpStatus.OK);
+//		
+//	}
+//	
+//	@PatchMapping(value="/updateEducationalDetails/{username}")
+//	public ResponseEntity<String> insertEducationalDetails(@RequestBody(required = true)EducationalDetails educationalDetails,@PathVariable("username")String username){
+//		JobSeeker jobSeeker = service.getJobSeekerByUsername(username);
+//		System.out.println(jobSeeker);
+//		int id=0;
+//		if(jobSeeker!=null) {
+//			 EducationalDetails educationalDetails2= jobSeeker.getEducationalDetails();
+//			if(educationalDetails2!=null) {
+//				id=educationalDetails2.getId();
+//				service.deleteEducationalDetails(id);
+//				service.insertEducationalDetails(educationalDetails,username);
+//			}else {
+//				service.insertEducationalDetails(educationalDetails,username);
+//			}
+//			
+//		}
+	
+//		return new ResponseEntity<String>("Educational Details Added!", HttpStatus.OK);
 		
-	}
+//	}
 	
 }

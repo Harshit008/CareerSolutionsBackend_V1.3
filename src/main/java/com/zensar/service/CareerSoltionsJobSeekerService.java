@@ -6,11 +6,9 @@ import java.util.Optional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.zensar.entities.Applications;
-import com.zensar.entities.EducationalDetails;
 import com.zensar.entities.JobSeeker;
 import com.zensar.entities.JobSeekerAuthenticationResponse;
 import com.zensar.entities.Jobs;
-import com.zensar.entities.ProfessionalDetails;
 import com.zensar.entities.Resume;
 import com.zensar.exception.GlobalExceptionHandler;
 
@@ -49,9 +47,8 @@ public interface CareerSoltionsJobSeekerService {
 
 	Resume saveFile(MultipartFile file, String username);
 
-	void insertProfessionalDetails(ProfessionalDetails professionalDetails, String username);
+	void insertJobSeeker(JobSeeker jobSeekerByUsername);
 
-	void insertEducationalDetails(EducationalDetails educationalDetails, String username);
 
 	
 
