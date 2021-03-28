@@ -133,6 +133,7 @@ public class CareerSolutionsJobSeekerServiceImpl implements CareerSoltionsJobSee
 		try {
 			Resume resume = new Resume(docname, file.getContentType(), file.getBytes());
 			resume.setJobSeeker(jobSeeker);
+			jobSeeker.setResume(resume);
 			return resumeRepository.save(resume);
 		} catch (Exception e) {
 			e.printStackTrace();

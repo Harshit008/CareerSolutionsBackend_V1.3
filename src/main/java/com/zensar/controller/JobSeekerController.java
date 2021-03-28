@@ -160,10 +160,11 @@ public class JobSeekerController {
 
 	@PostMapping(value="/uploadResume/{username}" ,headers = "content-type=multipart/form-data",produces = MediaType.ALL_VALUE)
 	public ResponseEntity<String> uploadMultipleFiles(@PathVariable("username")String username, @RequestPart("file") MultipartFile[] files) {
-		
+		JobSeeker jobSeeker = service.getJobSeekerByUsername(username);
 		for (MultipartFile file : files) {
 			 Resume resume = service.saveFile(file,username);
-			
+			 jobSeeker.setResume(resume);
+			 service.insertJobSeeker(jobSeeker);
 		}
 		//System.out.println(jobSeeker);
 		return new ResponseEntity<String>("Resume uploaded!", HttpStatus.OK);

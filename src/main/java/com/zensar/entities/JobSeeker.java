@@ -57,7 +57,7 @@ public class JobSeeker {
 	@OneToMany(mappedBy = "jobSeeker", orphanRemoval = true, cascade = CascadeType.ALL)
 	private List<Applications> applications;
 	
-	
-//	@OneToOne(mappedBy = "jobSeeker")
-//	private Resume resume;
+	@JsonIgnore
+	@OneToOne
+	private Resume resume;
 }
