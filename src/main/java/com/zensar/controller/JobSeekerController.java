@@ -16,10 +16,8 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,11 +25,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zensar.entities.Applications;
+import com.zensar.entities.EducationalDetails;
 import com.zensar.entities.JobSeeker;
 import com.zensar.entities.JobSeekerAuthenticationResponse;
 import com.zensar.entities.Jobs;
 import com.zensar.entities.NotificationEmail;
-import com.zensar.entities.Recruiter;
+import com.zensar.entities.ProfessionalDetails;
 import com.zensar.entities.Resume;
 import com.zensar.exception.GlobalExceptionHandler;
 import com.zensar.service.CareerSoltionsJobSeekerService;
@@ -185,7 +184,7 @@ public class JobSeekerController {
 		return new ResponseEntity<List<Applications>>(visible,HttpStatus.OK);	
 	}
 	
-	@PatchMapping(value="/acceptApplication/{applicationId}")
+	@PatchMapping(value="/acceptApplication/{applicationId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> acceptApplication(@PathVariable("applicationId")String applicationId) throws GlobalExceptionHandler{
 		Applications applications = service.getApplicationsByApplicationId(Integer.parseInt(applicationId));
 		JobSeeker jobSeeker = applications.getJobSeeker();
@@ -200,4 +199,33 @@ public class JobSeekerController {
 		
 	}
 
+	@PatchMapping(value="/rejectApplication/{applicationId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> rejectApplication(@PathVariable("applicationId")String applicationId) throws GlobalExceptionHandler{
+		Applications applications = service.getApplicationsByApplicationId(Integer.parseInt(applicationId));
+		JobSeeker jobSeeker = applications.getJobSeeker();
+		String recruiter = applications.getJobs().getRecruiter().getRecruiterName();
+		applications.setStatus("Rejected");
+		service.insertApplications(applications);
+		/*mailService.sendMail(new NotificationEmail("Congratulations!! Application Accepted!", jobSeeker.getEmail(),
+				"Thank you for the keen interest you have shown in joining "+recruiter+" \r\n"
+				+ "\r\n"
+				+ "Please accept our heartiest congratulations and warm welcome to "+recruiter+" family." ));*/
+		return new ResponseEntity<String>("Application Rejected", HttpStatus.OK);
+		
+	}
+	
+	@PatchMapping(value="/insertProfessionalDetails/{username}")
+	public ResponseEntity<String> insertProfessionalDetails(@RequestBody(required = true)ProfessionalDetails professionalDetails,@PathVariable("username")String username){
+		service.insertProfessionalDetails(professionalDetails,username);
+		return new ResponseEntity<String>("Professional Details Added!", HttpStatus.OK);
+		
+	}
+	
+	@PatchMapping(value="/insertEducationalDetails/{username}")
+	public ResponseEntity<String> insertEducationalDetails(@RequestBody(required = true)EducationalDetails educationalDetails,@PathVariable("username")String username){
+		service.insertEducationalDetails(educationalDetails,username);
+		return new ResponseEntity<String>("Educational Details Added!", HttpStatus.OK);
+		
+	}
+	
 }

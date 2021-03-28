@@ -13,18 +13,22 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.zensar.entities.Applications;
+import com.zensar.entities.EducationalDetails;
 import com.zensar.entities.JobSeeker;
 import com.zensar.entities.JobSeekerAuthenticationResponse;
 import com.zensar.entities.JobSeekerDetails;
 import com.zensar.entities.JobSeekerVerificationToken;
 import com.zensar.entities.Jobs;
 import com.zensar.entities.NotificationEmail;
+import com.zensar.entities.ProfessionalDetails;
 import com.zensar.entities.Resume;
 import com.zensar.exception.GlobalExceptionHandler;
 import com.zensar.repository.ApplicationsRepository;
+import com.zensar.repository.EducationalDetailsRepository;
 import com.zensar.repository.JobSeekerRepository;
 import com.zensar.repository.JobSeekerVerificationRepository;
 import com.zensar.repository.JobsRepository;
+import com.zensar.repository.ProfessionalDetailsRepository;
 import com.zensar.repository.ResumeRepository;
 import com.zensar.security.JwtUtil;
 
@@ -57,6 +61,12 @@ public class CareerSolutionsJobSeekerServiceImpl implements CareerSoltionsJobSee
 
 	@Autowired
 	private JwtUtil jwtUtil;
+	
+	@Autowired
+	private ProfessionalDetailsRepository professionalRespository;
+	
+	@Autowired
+	private EducationalDetailsRepository educationalRepository;
 
 	@Override
 	public JobSeeker registerJobSeeker(JobSeeker jobSeeker) throws GlobalExceptionHandler {
@@ -188,6 +198,21 @@ public class CareerSolutionsJobSeekerServiceImpl implements CareerSoltionsJobSee
 	public JobSeeker getJobSeekerByUsername(String username) {
 			JobSeeker jobSeeker= jobSeekerRepository.findByUsername(username).get();
 			return jobSeeker;
+	}
+
+	@Override
+	public void insertProfessionalDetails(ProfessionalDetails professionalDetails, String username) {
+		JobSeeker jobSeeker = jobSeekerRepository.findByUsername(username).get();
+		professionalDetails.setJobSeeker(jobSeeker);
+		professionalRespository.save(professionalDetails);
+		
+	}
+
+	@Override
+	public void insertEducationalDetails(EducationalDetails educationalDetails, String username) {
+			JobSeeker jobSeeker = jobSeekerRepository.findByUsername(username).get();
+			educationalDetails.setJobSeeker(jobSeeker);
+			educationalRepository.save(educationalDetails);
 	}
 
 }
