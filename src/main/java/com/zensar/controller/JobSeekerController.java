@@ -239,46 +239,4 @@ public class JobSeekerController {
 		return new ResponseEntity<JobSeeker>(jobSeeker, HttpStatus.OK);
 	}
 	
-//	@PatchMapping(value="/updateProfessionalDetails/{username}")
-//	public ResponseEntity<String> insertProfessionalDetails(@RequestBody(required = true)ProfessionalDetails professionalDetails,@PathVariable("username")String username){
-//		JobSeeker jobSeeker = service.getJobSeekerByUsername(username);
-//		int id =0;
-//		if(jobSeeker!=null) {
-//			 ProfessionalDetails professionalDetails2= jobSeeker.getProfessionalDetails();
-//			if(professionalDetails!=null) {
-//				id=professionalDetails2.getId();
-//				service.deleteProfessionalDetails(id);
-//				service.insertProfessionalDetails(professionalDetails,username);
-//			}else {
-//				service.insertProfessionalDetails(professionalDetails,username);
-//			}
-//			
-//		}
-//		
-//		
-//		return new ResponseEntity<String>("Professional Details Added!", HttpStatus.OK);
-//		
-//	}
-//	
-//	@PatchMapping(value="/updateEducationalDetails/{username}")
-//	public ResponseEntity<String> insertEducationalDetails(@RequestBody(required = true)EducationalDetails educationalDetails,@PathVariable("username")String username){
-//		JobSeeker jobSeeker = service.getJobSeekerByUsername(username);
-//		System.out.println(jobSeeker);
-//		int id=0;
-//		if(jobSeeker!=null) {
-//			 EducationalDetails educationalDetails2= jobSeeker.getEducationalDetails();
-//			if(educationalDetails2!=null) {
-//				id=educationalDetails2.getId();
-//				service.deleteEducationalDetails(id);
-//				service.insertEducationalDetails(educationalDetails,username);
-//			}else {
-//				service.insertEducationalDetails(educationalDetails,username);
-//			}
-//			
-//		}
-	
-//		return new ResponseEntity<String>("Educational Details Added!", HttpStatus.OK);
-		
-//	}
-	
 }

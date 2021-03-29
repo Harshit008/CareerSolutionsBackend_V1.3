@@ -67,7 +67,7 @@ public class CareerSolutionsJobSeekerServiceImpl implements CareerSoltionsJobSee
 		mailService.sendMail(new NotificationEmail("Please Activate your account", jobSeeker.getEmail(),
 				"Thank you for signing up to Career Solutions, "
 						+ "please click on the below url to activate your account : "
-						+ "http://localhost:9999/myapp/verifyJobSeeker/" + token));
+						+ "http://http://careersolutionsbackendv1-env.eba-umxntpch.ap-south-1.elasticbeanstalk.com/myapp/verifyJobSeeker/" + token));
 		if (res)
 			return jobSeeker;
 		else
