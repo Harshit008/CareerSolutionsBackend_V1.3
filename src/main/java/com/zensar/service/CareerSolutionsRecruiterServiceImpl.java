@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.zensar.entities.JobSeeker;
 import com.zensar.entities.Jobs;
 import com.zensar.entities.NotificationEmail;
 import com.zensar.entities.Recruiter;
@@ -20,6 +21,7 @@ import com.zensar.entities.RecruiterVerificationToken;
 import com.zensar.entities.Resume;
 import com.zensar.entities.Skills;
 import com.zensar.exception.GlobalExceptionHandler;
+import com.zensar.repository.JobSeekerRepository;
 import com.zensar.repository.JobsRepository;
 import com.zensar.repository.RecruiterRepository;
 import com.zensar.repository.RecruiterVerificationRepository;
@@ -58,6 +60,9 @@ public class CareerSolutionsRecruiterServiceImpl implements CareerSolutionsRecru
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
+	
+	@Autowired
+	private JobSeekerRepository jobSeekerRepository;
 
 	@Autowired
 	private JwtUtil jwtUtil;
@@ -203,6 +208,11 @@ public class CareerSolutionsRecruiterServiceImpl implements CareerSolutionsRecru
 	@Override
 	public Recruiter getRecruiterByUsername(String username) {
 		return repository.findByUsername(username).get();
+	}
+
+	@Override
+	public JobSeeker getJobSeekerById(int jobSeekerId) {
+		return jobSeekerRepository.findById(jobSeekerId).get();
 	}
 
 }

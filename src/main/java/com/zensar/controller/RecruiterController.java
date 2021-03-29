@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.zensar.entities.JobSeeker;
 import com.zensar.entities.Jobs;
 import com.zensar.entities.Recruiter;
 import com.zensar.entities.RecruiterAuthenticationResponse;
@@ -170,7 +171,7 @@ public class RecruiterController {
 		return new ResponseEntity<Jobs>(jobs, HttpStatus.OK);
 	}
 
-	@GetMapping("/downloadResume1/{fileId}")
+	@GetMapping("/downloadResume/{fileId}")
 
 	public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable int fileId) {
 		// Load file as Resource
@@ -178,5 +179,12 @@ public class RecruiterController {
 		return ResponseEntity.ok().contentType(MediaType.parseMediaType(resumeFile.getDocType()))
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resumeFile.getDocName() + "\"")
 				.body(new ByteArrayResource(resumeFile.getData()));
+	}
+	
+	@GetMapping(value="/getResume/{jobSeekerId}")
+	public ResponseEntity<Resume> getResume(@PathVariable("jobSeekerId")String jobSeekerId){
+		JobSeeker jobSeeker = service.getJobSeekerById(Integer.parseInt(jobSeekerId));
+		Resume resume = jobSeeker.getResume();
+		return new ResponseEntity<Resume>(resume, HttpStatus.OK);
 	}
 }

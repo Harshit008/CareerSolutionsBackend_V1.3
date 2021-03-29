@@ -232,6 +232,13 @@ public class JobSeekerController {
 		return null;
 	}
 	
+	@GetMapping(value="/getJobSeekerFromApplication/{applicationId}")
+	public ResponseEntity<JobSeeker> getJobSeekerFromApplication(@PathVariable("applicationId")String applicationId){
+		Applications application = service.getApplicationsByApplicationId(Integer.parseInt(applicationId));
+		JobSeeker jobSeeker = application.getJobSeeker();
+		return new ResponseEntity<JobSeeker>(jobSeeker, HttpStatus.OK);
+	}
+	
 //	@PatchMapping(value="/updateProfessionalDetails/{username}")
 //	public ResponseEntity<String> insertProfessionalDetails(@RequestBody(required = true)ProfessionalDetails professionalDetails,@PathVariable("username")String username){
 //		JobSeeker jobSeeker = service.getJobSeekerByUsername(username);

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.zensar.entities.JobSeeker;
 import com.zensar.entities.Jobs;
 import com.zensar.entities.Recruiter;
 import com.zensar.entities.RecruiterAuthenticationResponse;
@@ -50,5 +51,7 @@ public interface CareerSolutionsRecruiterService {
 			throws InvalidKeyException, GlobalExceptionHandler;
 
 	public Recruiter getRecruiterByUsername(String username);
+
+	public JobSeeker getJobSeekerById(int parseInt);
 
 }
