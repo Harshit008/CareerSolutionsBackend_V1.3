@@ -239,4 +239,21 @@ public class JobSeekerController {
 		return new ResponseEntity<JobSeeker>(jobSeeker, HttpStatus.OK);
 	}
 	
+	@GetMapping(value="/hasApplied/{jobId}/{jsusername}")
+	public ResponseEntity<String> hasApplied(@PathVariable("jobId")String jobId,@PathVariable("jsusername")String username){
+		Jobs jobById = service.getJobById(Integer.parseInt(jobId));
+		JobSeeker jobSeeker = service.getJobSeekerByUsername(username);
+		List<Applications> applications = jobById.getApplications();
+		for(int i=0;i<applications.size();i++) {
+			if(applications.get(i).getJobSeeker().getUsername().equals(username)) {
+				System.out.println(applications.get(i).getJobSeeker().getUsername());
+					return new ResponseEntity<String>("JobSeeker found", HttpStatus.OK);
+			}else
+				return null;
+		}
+		return null;
+		
+		
+	}
+	
 }
