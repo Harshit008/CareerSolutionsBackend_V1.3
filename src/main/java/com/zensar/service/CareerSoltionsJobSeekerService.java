@@ -7,14 +7,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.zensar.entities.Applications;
 import com.zensar.entities.JobSeeker;
+import com.zensar.entities.JobSeekerAuthenticationResponse;
 import com.zensar.entities.Jobs;
 import com.zensar.entities.Resume;
+import com.zensar.exception.GlobalExceptionHandler;
 
 public interface CareerSoltionsJobSeekerService {
 
-	JobSeeker jobSeekerlogin(String username, String password);
-
-	JobSeeker registerJobSeeker(JobSeeker jobSeeker);
+	JobSeeker registerJobSeeker(JobSeeker jobSeeker) throws GlobalExceptionHandler;
 
 	List<JobSeeker> getJobSeeker();
 
@@ -32,11 +32,25 @@ public interface CareerSoltionsJobSeekerService {
 
 	void deleteApplication(int applicationId);
 
-	Resume saveFile(MultipartFile file);
 
 	Optional<Resume> getFile(Integer fileId);
 
 	List<Resume> getFiles();
+
+	void verifyJobSeeker(String token) throws GlobalExceptionHandler;
+
+	JobSeekerAuthenticationResponse jobSeekerlogin(JobSeeker jobSeeker);
+
+	List<Jobs> getJobs();
+
+	JobSeeker getJobSeekerByUsername(String username);
+
+	Resume saveFile(MultipartFile file, String username);
+
+	void insertJobSeeker(JobSeeker jobSeekerByUsername);
+
+
+	
 
 	
 

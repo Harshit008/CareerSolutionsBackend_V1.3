@@ -17,13 +17,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "recruiter_token")
-public class RecruiterVerificationToken {
+@Table(name = "Job_Seeker_token")
+public class JobSeekerVerificationToken {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
 	private String token;
 	@OneToOne(fetch = LAZY)
-	private Recruiter recruiter;
+	private JobSeeker jobSeeker;
 }

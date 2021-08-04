@@ -17,15 +17,15 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.zensar.filter.JwtAuthenticationFilter;
-import com.zensar.service.RecruiterDetailsServiceImpl;
+import com.zensar.service.JobSeekerDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
-@Order(1)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@Order(2)
+public class SecurityConfig2 extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	private RecruiterDetailsServiceImpl userDetailsService;
+	private JobSeekerDetailsServiceImpl userDetailsService;
 
 	@Autowired
 	private JwtAuthenticationFilter jwtFilter;

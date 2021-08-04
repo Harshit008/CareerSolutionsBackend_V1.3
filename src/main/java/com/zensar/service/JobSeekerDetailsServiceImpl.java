@@ -14,27 +14,28 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.zensar.entities.Recruiter;
-import com.zensar.entities.RecruiterDetails;
-import com.zensar.repository.RecruiterRepository;
+import com.zensar.entities.JobSeeker;
+import com.zensar.entities.JobSeekerDetails;
+import com.zensar.repository.JobSeekerRepository;
 
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class RecruiterDetailsServiceImpl implements UserDetailsService {
+public class JobSeekerDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
-	private RecruiterRepository repository;
+	private JobSeekerRepository repository;
 
 	@Override
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String username) {
-		Optional<Recruiter> recruiterOptional = repository.findByUsername(username);
-		Recruiter recruiter = recruiterOptional
+		Optional<JobSeeker> jobSeekerOptional = repository.findByUsername(username);
+		JobSeeker jobSeeker = jobSeekerOptional
 				.orElseThrow(() -> new UsernameNotFoundException("No user " + "Found with username : " + username));
-		System.out.println(recruiter);
-		return new RecruiterDetails(getAuthorities("USER"), recruiter, true, true, true);
+		System.out.println(jobSeeker);
+
+		return new JobSeekerDetails(getAuthorities("USER"), jobSeeker, true, true, true);
 	}
 
 	private Collection<? extends GrantedAuthority> getAuthorities(String role) {

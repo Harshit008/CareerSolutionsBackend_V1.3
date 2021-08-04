@@ -2,9 +2,8 @@ package com.zensar.exception;
 
 import java.sql.SQLException;
 
+public class MySqlException extends SQLException {
 
-public class MySqlException extends SQLException{
-	
 	/**
 	 * 
 	 */

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.zensar.entities.JobSeeker;
 import com.zensar.entities.Jobs;
 import com.zensar.entities.Recruiter;
 import com.zensar.entities.RecruiterAuthenticationResponse;
@@ -17,7 +18,6 @@ import io.jsonwebtoken.security.InvalidKeyException;
 public interface CareerSolutionsRecruiterService {
 
 	public List<Recruiter> getRecruiter();
-	//List<Recruiter> getProduct();
 
 	public Recruiter getRecruiterById(int recruiterId);
 
@@ -47,26 +47,11 @@ public interface CareerSolutionsRecruiterService {
 
 	public void verifyRecruiter(String token) throws GlobalExceptionHandler;
 
-	public RecruiterAuthenticationResponse login(Recruiter recruiter) throws InvalidKeyException, GlobalExceptionHandler;
+	public RecruiterAuthenticationResponse login(Recruiter recruiter)
+			throws InvalidKeyException, GlobalExceptionHandler;
 
 	public Recruiter getRecruiterByUsername(String username);
 
-	//UserDetails loadRecruiterByUsername(String username);
-
-
-	
-
-	// localhost:8080/{productId} products Endpoint
-//	Recruiter getRecruiter(int productId);
-//	
-//	List<Recruiter> getRecruiterByName(String productName);
-//	List<Recruiter> getProductByCost(int productCost);
-//
-//	Recruiter insertProduct(Recruiter Recruiter);
-//
-//	void deleteProduct(int productId);
-//
-//	Recruiter updateProduct(int productId, Recruiter Recruiter);
-
+	public JobSeeker getJobSeekerById(int parseInt);
 
 }

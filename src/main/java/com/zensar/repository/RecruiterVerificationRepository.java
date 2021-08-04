@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.zensar.entities.RecruiterVerificationToken;
 
-public interface VerificationTokenRepository extends JpaRepository<RecruiterVerificationToken, Long> {
+public interface RecruiterVerificationRepository extends JpaRepository<RecruiterVerificationToken, Long> {
 
 	Optional<RecruiterVerificationToken> findByToken(String token);
 

@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RecruiterDetails implements UserDetails {
+public class JobSeekerDetails implements UserDetails {
 
 	/**
 	 * 
@@ -23,31 +23,31 @@ public class RecruiterDetails implements UserDetails {
 	 */
 
 	Collection<? extends GrantedAuthority> authorities = null;
-	private Recruiter recruiter;
+	private JobSeeker jobSeeker;
 	private boolean AccountNonLocked;
 	private boolean AccountNonExpired;
 	private boolean CredentialsNonExpired;
 
 	@Override
 	public String getPassword() {
-		return recruiter.getPassword();
+		return jobSeeker.getPassword();
 	}
 
 	@Override
 	public String getUsername() {
-		return recruiter.getUsername();
+		return jobSeeker.getUsername();
 	}
 
 	@Override
 	public boolean isEnabled() {
-		return recruiter.isEnabled();
+		return jobSeeker.isEnabled();
 	}
 
-	public RecruiterDetails(Collection<? extends GrantedAuthority> authorities, Recruiter recruiter,
+	public JobSeekerDetails(Collection<? extends GrantedAuthority> authorities, JobSeeker jobSeeker,
 			boolean accountNonLocked, boolean accountNonExpired, boolean credentialsNonExpired) {
 		super();
 		this.authorities = authorities;
-		this.recruiter = recruiter;
+		this.jobSeeker = jobSeeker;
 		AccountNonLocked = accountNonLocked;
 		AccountNonExpired = accountNonExpired;
 		CredentialsNonExpired = credentialsNonExpired;
